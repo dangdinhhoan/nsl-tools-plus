@@ -46,5 +46,5 @@ jobs:
           tagName: v__VERSION__
           releaseName: 'NSL Tools Plus v__VERSION__'
           releaseBody: 'Bản phát hành tự động của NSL Tools Plus.'
-          releaseDraft: true # Lưu dưới dạng Bản nháp để bạn kiểm tra trước khi công khai
+          releaseDraft: false # Lưu dưới dạng Bản nháp để bạn kiểm tra trước khi công khai
           prerelease: false

@@ -1,12 +1,27 @@
-# Node
+# =========================================
+# 🛑 1. CÁC FILE BẢO MẬT (CỰC KỲ QUAN TRỌNG)
+# =========================================
+.env
+.env.*
+*.pem
+*.key
+secrets.json
+config/database.json
+
+# =========================================
+# 🛠️ 2. TOOL CÁ NHÂN & SCRIPT TỰ ĐỘNG
+# =========================================
+github_updater_gui.py
+github_push.py
+__pycache__/
+*.pyc
+
+# =========================================
+# 📦 3. CODE CỦA TAURI & RUST (Đã có từ trước)
+# =========================================
 node_modules/
 dist/
-
-# Rust / Tauri
 src-tauri/target/
 **/*.rs.bk
-
-# OS & Logs
 .DS_Store
 *.log
-.env

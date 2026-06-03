@@ -1,9 +1,16 @@
 import { useState, useCallback, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import ContentArea from "./components/ContentArea";
+import UpdateBanner from "./components/UpdateBanner";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import "./App.css";
+
+interface UpdateInfo {
+  version: string;
+  current_version: string;
+  download_url: string;
+}
 
 export interface MenuItem {
   label: string;
@@ -63,6 +70,24 @@ const menuGroups: MenuGroup[] = [
 function App() {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [dbPath, setDbPath] = useState<string | null>(null);
+  const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
+  const [showUpdateBanner, setShowUpdateBanner] = useState(false);
+
+  // Auto-check for updates on startup
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const result = await invoke<UpdateInfo | null>("check_update");
+        if (result) {
+          setUpdateInfo(result);
+          setShowUpdateBanner(true);
+        }
+      } catch (e) {
+        console.log("Không thể kiểm tra cập nhật:", e);
+      }
+    };
+    check();
+  }, []);
 
   // Sync window title whenever dbPath changes
   useEffect(() => {
@@ -109,8 +134,27 @@ function App() {
     }
   }, [dbPath]);
 
+  const handleUpdate = useCallback(async () => {
+    if (!updateInfo) return;
+    try {
+      await invoke("download_and_install", { downloadUrl: updateInfo.download_url });
+    } catch (e) {
+      console.error("Lỗi cập nhật:", e);
+    }
+  }, [updateInfo]);
+
   return (
     <div className="app-container">
+      {showUpdateBanner && updateInfo && (
+        <UpdateBanner
+          version={updateInfo.version}
+          currentVersion={updateInfo.current_version}
+          downloadUrl={updateInfo.download_url}
+          dbPath={dbPath}
+          onDismiss={() => setShowUpdateBanner(false)}
+          onUpdate={handleUpdate}
+        />
+      )}
       <Sidebar
         menuGroups={menuGroups}
         activeItem={activeItem}
