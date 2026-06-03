@@ -1,0 +1,12 @@
+# Node
+node_modules/
+dist/
+
+# Rust / Tauri
+src-tauri/target/
+**/*.rs.bk
+
+# OS & Logs
+.DS_Store
+*.log
+.env

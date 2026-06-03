@@ -1,0 +1,50 @@
+name: "Build & Release NSL Tools Plus"
+
+# Kịch bản này sẽ tự động chạy khi bạn tạo một "Tag" phiên bản mới (vd: v0.1.0)
+# Hoặc bạn có thể bấm nút chạy thủ công (workflow_dispatch)
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-tauri:
+    permissions:
+      contents: write # Cho phép GitHub tạo Release và tải file lên
+    
+    # Chạy đồng thời trên cả 2 hệ điều hành
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      # Cài đặt thư viện của framework frontend (React/Vue/Vanilla...)
+      - name: Install frontend dependencies
+        run: npm install # Đổi thành 'yarn install' hoặc 'pnpm install' nếu bạn dùng tool khác
+
+      # Sử dụng Action chính thức của Tauri để Build và tạo Release
+      - name: Build Tauri app and create Release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Lấy version tự động từ tauri.conf.json
+          tagName: v__VERSION__
+          releaseName: 'NSL Tools Plus v__VERSION__'
+          releaseBody: 'Bản phát hành tự động của NSL Tools Plus.'
+          releaseDraft: true # Lưu dưới dạng Bản nháp để bạn kiểm tra trước khi công khai
+          prerelease: false

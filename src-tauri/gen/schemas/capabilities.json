@@ -1,0 +1,1 @@
+{"default-capability":{"identifier":"default-capability","description":"Default capability for NSL Tools Plus","local":true,"windows":["main"],"permissions":["core:default","shell:allow-open","dialog:default"]}}
