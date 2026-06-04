@@ -27,6 +27,7 @@ import {
   FolderOpen,
   Save,
   ChevronDown,
+  PanelLeftClose,
 } from "lucide-react";
 import "./Sidebar.css";
 
@@ -38,6 +39,9 @@ interface SidebarProps {
   onNewDb: () => void;
   onOpenDb: () => void;
   onSaveAsDb: () => void;
+  updateStatus: "checking" | "up-to-date" | "available" | "error";
+  updateVersion: string | null;
+  onUpdateNow: () => void;
 }
 
 const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
@@ -86,25 +90,44 @@ const Sidebar: React.FC<SidebarProps> = ({
   onNewDb,
   onOpenDb,
   onSaveAsDb,
+  updateStatus,
+  updateVersion,
+  onUpdateNow,
 }) => {
   const [expandedGroup, setExpandedGroup] = useState<string>("");
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleToggleGroup = (header: string) => {
     setExpandedGroup(prev => (prev === header ? "" : header));
   };
 
   return (
-    <aside className="sidebar glass">
+    <aside className={`sidebar glass ${collapsed ? "sidebar-collapsed" : ""}`}>
       {/* Header */}
       <div className="sidebar-header">
-        <div className="sidebar-logo">
-          <div className="logo-icon">
-            <Sparkles size={24} />
+        <div className="sidebar-header-top">
+          <div
+            className="sidebar-logo"
+            onClick={() => { if (collapsed) setCollapsed(false); }}
+            style={{ cursor: collapsed ? "pointer" : "default" }}
+          >
+            <div className="logo-icon">
+              <Sparkles size={24} />
+            </div>
+            <div className="logo-text">
+              <span className="logo-title">NSL Tools</span>
+              <span className="logo-plus">Plus</span>
+            </div>
           </div>
-          <div className="logo-text">
-            <span className="logo-title">NSL Tools</span>
-            <span className="logo-plus">Plus</span>
-          </div>
+          {!collapsed && (
+            <button
+              className="sidebar-toggle-btn"
+              onClick={() => setCollapsed(true)}
+              title="Thu gọn sidebar"
+            >
+              <PanelLeftClose size={18} />
+            </button>
+          )}
         </div>
         <div className="sidebar-subtitle">Quản lý nhà trường</div>
       </div>
@@ -138,6 +161,31 @@ const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       <div className="sidebar-separator" />
+
+      {/* Collapsed: show group icon shortcuts */}
+      {collapsed && (
+        <nav className="sidebar-collapsed-nav">
+          {menuGroups.map((group) => {
+            const GroupIcon = groupIcons[group.header];
+            const color = groupColors[group.header] || "#64748b";
+            const isExpanded = expandedGroup === group.header;
+            return (
+              <button
+                key={group.header}
+                className={`collapsed-group-btn ${isExpanded ? "collapsed-group-active" : ""}`}
+                onClick={() => {
+                  setCollapsed(false);
+                  setExpandedGroup(group.header);
+                }}
+                title={group.header}
+                style={{ "--group-color": color } as React.CSSProperties}
+              >
+                {GroupIcon && <GroupIcon size={20} />}
+              </button>
+            );
+          })}
+        </nav>
+      )}
 
       {/* Menu */}
       <nav className="sidebar-nav">
@@ -200,7 +248,21 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <div className="footer-version">v1.0.0</div>
+        <div className="sidebar-version-info">
+          {dbPath ? (
+            <span className="version-status has-db" title={dbPath}>{dbPath.split(/[\\\/]/).pop()}</span>
+          ) : updateStatus === "available" && updateVersion ? (
+            <button className="version-update-btn" onClick={onUpdateNow} title="Bấm để cập nhật">
+              v1.0.1 → Có bản mới v{updateVersion}! <span className="update-now-link">Cập nhật ngay</span>
+            </button>
+          ) : updateStatus === "up-to-date" ? (
+            <span className="version-status">v1.0.1 — Đã là phiên bản mới nhất</span>
+          ) : updateStatus === "checking" ? (
+            <span className="version-status">v1.0.1 — Đang kiểm tra cập nhật...</span>
+          ) : (
+            <span className="version-status">v1.0.1</span>
+          )}
+        </div>
       </div>
     </aside>
   );

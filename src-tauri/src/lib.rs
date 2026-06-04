@@ -93,6 +93,8 @@ async fn check_update() -> Result<Option<UpdateInfo>, String> {
 
     let client = reqwest::Client::builder()
         .user_agent("NSL-Tools-Plus-Updater")
+        .timeout(std::time::Duration::from_secs(5))
+        .connect_timeout(std::time::Duration::from_secs(3))
         .build()
         .map_err(|e| format!("Lỗi tạo client: {}", e))?;
 

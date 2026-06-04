@@ -1,6 +1,6 @@
 [package]
 name = "nsl-tools-plus"
-version = "1.0.1"
+version = "1.0.2"
 description = "NSL Tools Plus - Công cụ quản lý nhà trường"
 authors = ["NSL"]
 edition = "2021"

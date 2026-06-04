@@ -1,7 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import ContentArea from "./components/ContentArea";
-import UpdateBanner from "./components/UpdateBanner";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import "./App.css";
@@ -71,7 +70,7 @@ function App() {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [dbPath, setDbPath] = useState<string | null>(null);
   const [updateInfo, setUpdateInfo] = useState<UpdateInfo | null>(null);
-  const [showUpdateBanner, setShowUpdateBanner] = useState(false);
+  const [updateStatus, setUpdateStatus] = useState<"checking" | "up-to-date" | "available" | "error">("checking");
 
   // Auto-check for updates on startup
   useEffect(() => {
@@ -80,10 +79,13 @@ function App() {
         const result = await invoke<UpdateInfo | null>("check_update");
         if (result) {
           setUpdateInfo(result);
-          setShowUpdateBanner(true);
+          setUpdateStatus("available");
+        } else {
+          setUpdateStatus("up-to-date");
         }
       } catch (e) {
         console.log("Không thể kiểm tra cập nhật:", e);
+        setUpdateStatus("error");
       }
     };
     check();
@@ -145,16 +147,6 @@ function App() {
 
   return (
     <div className="app-container">
-      {showUpdateBanner && updateInfo && (
-        <UpdateBanner
-          version={updateInfo.version}
-          currentVersion={updateInfo.current_version}
-          downloadUrl={updateInfo.download_url}
-          dbPath={dbPath}
-          onDismiss={() => setShowUpdateBanner(false)}
-          onUpdate={handleUpdate}
-        />
-      )}
       <Sidebar
         menuGroups={menuGroups}
         activeItem={activeItem}
@@ -163,6 +155,9 @@ function App() {
         onNewDb={handleNewDb}
         onOpenDb={handleOpenDb}
         onSaveAsDb={handleSaveAsDb}
+        updateStatus={updateStatus}
+        updateVersion={updateInfo?.version ?? null}
+        onUpdateNow={handleUpdate}
       />
       <ContentArea activeItem={activeItem} dbPath={dbPath} />
     </div>
