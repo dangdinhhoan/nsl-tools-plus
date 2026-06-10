@@ -26,6 +26,7 @@ import {
   FilePlus,
   FolderOpen,
   Save,
+  Database,
   ChevronDown,
   PanelLeftClose,
 } from "lucide-react";
@@ -94,7 +95,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   updateVersion,
   onUpdateNow,
 }) => {
-  const [expandedGroup, setExpandedGroup] = useState<string>("");
+  const [expandedGroup, setExpandedGroup] = useState<string>("csdl");
   const [collapsed, setCollapsed] = useState(false);
 
   const handleToggleGroup = (header: string) => {
@@ -135,23 +136,38 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Separator */}
       <div className="sidebar-separator" />
 
-      {/* Database Actions */}
-      <div className="sidebar-db-actions">
-        <button className="db-action-btn" title="Tạo mới CSDL" onClick={onNewDb}>
-          <FilePlus size={16} />
-          <span>Tạo mới</span>
+      {/* Database Actions - grouped like menu */}
+      <div className="menu-group">
+        <button
+          className={`menu-group-header ${expandedGroup === "csdl" ? "header-expanded" : ""}`}
+          onClick={() => handleToggleGroup("csdl")}
+          style={{ "--group-color": "#2563eb" } as React.CSSProperties}
+        >
+          <div className="group-indicator" />
+          <span className="group-icon"><Database size={15} /></span>
+          <span className="group-title">Cơ sở dữ liệu</span>
+          <ChevronDown
+            size={14}
+            className={`group-chevron ${expandedGroup === "csdl" ? "chevron-rotated" : ""}`}
+          />
         </button>
-        <button className="db-action-btn" title="Mở CSDL" onClick={onOpenDb}>
-          <FolderOpen size={16} />
-          <span>Mở file</span>
-        </button>
-        <button className="db-action-btn" title="Lưu tên khác" onClick={onSaveAsDb} disabled={!dbPath}>
-          <Save size={16} />
-          <span>Lưu tên khác</span>
-        </button>
+        <div className={`menu-group-items ${expandedGroup === "csdl" ? "items-expanded" : "items-collapsed"}`}>
+          <button className="menu-item" onClick={onNewDb}>
+            <span className="menu-item-icon"><FilePlus size={16} /></span>
+            <span className="menu-item-label">Tạo mới</span>
+          </button>
+          <button className="menu-item" onClick={onOpenDb}>
+            <span className="menu-item-icon"><FolderOpen size={16} /></span>
+            <span className="menu-item-label">Mở file</span>
+          </button>
+          <button className="menu-item" onClick={onSaveAsDb} disabled={!dbPath} style={!dbPath ? { opacity: 0.4, cursor: "not-allowed", pointerEvents: "none" } : undefined}>
+            <span className="menu-item-icon"><Save size={16} /></span>
+            <span className="menu-item-label">Lưu tên khác</span>
+          </button>
+        </div>
       </div>
 
-      {/* Current DB path indicator */}
+      {/* Current DB path indicator - NOT in group */}
       <div className={`sidebar-db-path ${dbPath ? "has-path" : ""}`}>
         {dbPath ? (
           <span className="db-path-text" title={dbPath}>{dbPath}</span>
@@ -165,6 +181,18 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Collapsed: show group icon shortcuts */}
       {collapsed && (
         <nav className="sidebar-collapsed-nav">
+          {/* CSDL shortcut */}
+          <button
+            className={`collapsed-group-btn ${expandedGroup === "csdl" ? "collapsed-group-active" : ""}`}
+            onClick={() => {
+              setCollapsed(false);
+              setExpandedGroup("csdl");
+            }}
+            title="Cơ sở dữ liệu"
+            style={{ "--group-color": "#2563eb" } as React.CSSProperties}
+          >
+            <Database size={20} />
+          </button>
           {menuGroups.map((group) => {
             const GroupIcon = groupIcons[group.header];
             const color = groupColors[group.header] || "#64748b";
@@ -248,19 +276,22 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Footer */}
       <div className="sidebar-footer">
-        <div className="sidebar-version-info">
-          {dbPath ? (
+        {dbPath && (
+          <div className="sidebar-version-info">
             <span className="version-status has-db" title={dbPath}>{dbPath.split(/[\\\/]/).pop()}</span>
-          ) : updateStatus === "available" && updateVersion ? (
+          </div>
+        )}
+        <div className="sidebar-version-info">
+          {updateStatus === "available" && updateVersion ? (
             <button className="version-update-btn" onClick={onUpdateNow} title="Bấm để cập nhật">
-              v1.0.1 → Có bản mới v{updateVersion}! <span className="update-now-link">Cập nhật ngay</span>
+              v1.0.2 → Có bản mới v{updateVersion}! <span className="update-now-link">Cập nhật ngay</span>
             </button>
           ) : updateStatus === "up-to-date" ? (
-            <span className="version-status">v1.0.1 — Đã là phiên bản mới nhất</span>
+            <span className="version-status">v1.0.2 — Đã là phiên bản mới nhất</span>
           ) : updateStatus === "checking" ? (
-            <span className="version-status">v1.0.1 — Đang kiểm tra cập nhật...</span>
+            <span className="version-status">v1.0.2 — Đang kiểm tra cập nhật...</span>
           ) : (
-            <span className="version-status">v1.0.1</span>
+            <span className="version-status">v1.0.2</span>
           )}
         </div>
       </div>

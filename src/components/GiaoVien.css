@@ -1,0 +1,234 @@
+.gv-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.gv-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.gv-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid rgba(148,163,184,0.15);
+}
+
+.gv-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0f172a;
+}
+
+.gv-header-left h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.gv-count {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.gv-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-bottom: 1px solid rgba(148,163,184,0.1);
+  flex-wrap: wrap;
+}
+
+.gv-toolbar-spacer { flex: 1; }
+
+.gv-btn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.gv-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.gv-btn-outline { border: 1px solid rgba(0,0,0,0.12); color: #475569; }
+.gv-btn-outline:hover:not(:disabled) { background: #f1f5f9; }
+
+.gv-btn-add { background: #059669; color: white; }
+.gv-btn-add:hover:not(:disabled) { background: #047857; }
+
+.gv-btn-del { background: #dc2626; color: white; }
+.gv-btn-del:hover:not(:disabled) { background: #b91c1c; }
+
+.gv-btn-del-all { background: #991b1b; color: white; }
+.gv-btn-del-all:hover:not(:disabled) { background: #7f1d1d; }
+
+.gv-btn-save { background: #2563eb; color: white; }
+.gv-btn-save:hover:not(:disabled) { background: #1d4ed8; }
+
+.gv-msg { font-size: 0.8rem; font-weight: 600; }
+.gv-msg.success { color: #059669; }
+.gv-msg.error { color: #dc2626; }
+
+.gv-table-wrap {
+  flex: 1;
+  overflow: auto;
+}
+
+.gv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.gv-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.gv-table th {
+  background: #f8fafc;
+  padding: 10px 8px;
+  text-align: left;
+  font-weight: 700;
+  color: #334155;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(148,163,184,0.2);
+}
+
+.gv-table td {
+  padding: 4px 4px;
+  border-bottom: 1px solid rgba(148,163,184,0.1);
+}
+
+.gv-table input, .gv-table select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  background: transparent;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+.gv-table input:focus, .gv-table select:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: white;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.1);
+}
+
+.gv-table input:hover, .gv-table select:hover {
+  border-color: rgba(0,0,0,0.12);
+}
+
+.gv-table select {
+  cursor: pointer;
+}
+
+.gv-td-center { text-align: center; }
+.gv-td-center input { width: auto; }
+
+.gv-row-selected td {
+  background: rgba(37,99,235,0.06);
+}
+
+.gv-table-empty {
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* ── Import Dialog ── */
+.gv-import-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.gv-import-dialog {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+
+.gv-import-dialog h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  color: #0f172a;
+}
+
+.gv-import-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.gv-import-row label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #334155;
+  min-width: 100px;
+}
+
+.gv-import-row select {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.15);
+  font-size: 0.8rem;
+  background: white;
+}
+
+.gv-import-mapping {
+  margin: 12px 0;
+}
+
+.gv-import-mapping p {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.gv-import-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  justify-content: flex-end;
+}

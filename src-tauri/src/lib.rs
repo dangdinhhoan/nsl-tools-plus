@@ -4,6 +4,8 @@ use serde::Deserialize;
 use std::fs;
 use std::path::PathBuf;
 
+mod commands;
+
 const GITHUB_REPO: &str = "dangdinhhoan/nsl-tools-plus";
 const CURRENT_VERSION: &str = env!("CARGO_PKG_VERSION");
 
@@ -132,6 +134,8 @@ async fn check_update() -> Result<Option<UpdateInfo>, String> {
 async fn download_and_install(download_url: String) -> Result<(), String> {
     let client = reqwest::Client::builder()
         .user_agent("NSL-Tools-Plus-Updater")
+        .timeout(std::time::Duration::from_secs(5))
+        .connect_timeout(std::time::Duration::from_secs(3))
         .build()
         .map_err(|e| format!("Lỗi tạo client: {}", e))?;
 
@@ -174,11 +178,14 @@ fn create_empty_db(path: &str) -> Result<(), Box<dyn std::error::Error>> {
     conn.execute_batch("
         CREATE TABLE IF NOT EXISTS thongtintruong (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nam_hoc TEXT,
-            ten_truong TEXT,
-            dia_chi TEXT,
-            dien_thoai TEXT,
-            hieu_truong TEXT
+            don_vi_chu_quan TEXT DEFAULT '',
+            ten_truong TEXT DEFAULT '',
+            nam_hoc TEXT NOT NULL,
+            ghi_chu TEXT DEFAULT '',
+            hieu_truong TEXT DEFAULT '',
+            pho_hieu_truong_1 TEXT DEFAULT '',
+            pho_hieu_truong_2 TEXT DEFAULT '',
+            UNIQUE(nam_hoc)
         );
     ")?;
     Ok(())
@@ -190,6 +197,7 @@ pub fn run() {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_process::init())
+        .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![
             greet,
             new_database,
@@ -197,7 +205,18 @@ pub fn run() {
             save_as_database,
             get_current_version,
             check_update,
-            download_and_install
+            download_and_install,
+            commands::get_nam_hoc_list_truong,
+            commands::get_thong_tin_truong,
+            commands::save_thong_tin_truong,
+            commands::add_nam_hoc_truong,
+            commands::delete_nam_hoc_truong,
+            commands::get_giao_vien_list,
+            commands::save_giao_vien_list,
+            commands::delete_all_giao_vien,
+            commands::get_excel_sheets,
+            commands::get_excel_columns,
+            commands::import_excel_rows
         ])
         .setup(|app| {
             let window = app.get_webview_window("main").unwrap();

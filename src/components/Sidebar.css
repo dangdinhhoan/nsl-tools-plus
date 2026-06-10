@@ -111,6 +111,7 @@
 /* ── Collapsed: everything stays in place, overflow clips right side ── */
 .sidebar-collapsed .sidebar-db-actions,
 .sidebar-collapsed .sidebar-db-path,
+.sidebar-collapsed .menu-group,
 .sidebar-collapsed .sidebar-nav,
 .sidebar-collapsed .sidebar-separator:nth-of-type(2) {
   display: none;
@@ -547,14 +548,15 @@
 }
 
 .version-status {
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
 }
 
 .version-status.has-db {
   color: #059669;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.75rem;
 }
 
 .version-update-btn {

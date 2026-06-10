@@ -7,6 +7,8 @@ import {
   Zap,
   Shield,
 } from "lucide-react";
+import ThongTinTruong from "./ThongTinTruong";
+import GiaoVien from "./GiaoVien";
 import "./ContentArea.css";
 
 interface ContentAreaProps {
@@ -69,6 +71,15 @@ const ContentArea: React.FC<ContentAreaProps> = ({ activeItem, dbPath }) => {
 
   return (
     <main className="content-area">
+      {activeItem === "Trường" ? (
+        <div className="page-container glass">
+          <ThongTinTruong dbPath={dbPath} />
+        </div>
+      ) : activeItem === "Giáo viên" ? (
+        <div className="page-container glass">
+          <GiaoVien dbPath={dbPath} />
+        </div>
+      ) : (
       <div className="page-container glass">
         {/* Page header */}
         <div className="page-header">
@@ -95,6 +106,7 @@ const ContentArea: React.FC<ContentAreaProps> = ({ activeItem, dbPath }) => {
           </div>
         </div>
       </div>
+      )}
     </main>
   );
 };

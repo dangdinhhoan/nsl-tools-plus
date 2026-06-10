@@ -1,0 +1,205 @@
+.ttt-container {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.ttt-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Header */
+.ttt-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.ttt-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #0f172a;
+}
+
+.ttt-header-left h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+/* Toolbar */
+.ttt-toolbar {
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.ttt-namhoc-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ttt-namhoc-group label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.ttt-namhoc-group select {
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: white;
+  min-width: 160px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.ttt-btn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ttt-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ttt-btn-add {
+  background: #059669;
+  color: white;
+}
+
+.ttt-btn-add:hover:not(:disabled) {
+  background: #047857;
+}
+
+.ttt-btn-del {
+  background: #dc2626;
+  color: white;
+}
+
+.ttt-btn-del:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.ttt-btn-save {
+  background: #2563eb;
+  color: white;
+  padding: 10px 22px;
+  font-size: 0.85rem;
+}
+
+.ttt-btn-save:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+/* Form */
+.ttt-form {
+  flex: 1;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.ttt-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ttt-form-row label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.ttt-required {
+  color: #dc2626;
+}
+
+.ttt-form-row input,
+.ttt-form-row textarea {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #0f172a;
+  background: white;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+
+.ttt-form-row input:focus,
+.ttt-form-row textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.ttt-form-row input:disabled,
+.ttt-form-row textarea:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+.ttt-form-row textarea {
+  resize: vertical;
+}
+
+.ttt-form-row-half {
+  flex-direction: row;
+  gap: 16px;
+}
+
+.ttt-form-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Actions */
+.ttt-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-top: 4px;
+}
+
+.ttt-msg {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.ttt-msg.success {
+  color: #059669;
+}
+
+.ttt-msg.error {
+  color: #dc2626;
+}
